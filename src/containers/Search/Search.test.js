@@ -16,16 +16,15 @@ describe("Search container", () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  test("should update articles state", done => {
+  test("should update articles state", () => {
     const wrapper = mount(<SearchContainer />);
 
     expect(wrapper.state().articles).toEqual([]);
 
-    wrapper.update();
+    const { performSearch } = wrapper.find(Search).props();
 
-    setTimeout(() => {
-      expect(wrapper.state().articles.length).toEqual(10);
-      done();
-    }, 2000);
+    return performSearch().then(() => {
+      expect(wrapper.state().articles).toHaveLength(10);
+    });
   });
 });
